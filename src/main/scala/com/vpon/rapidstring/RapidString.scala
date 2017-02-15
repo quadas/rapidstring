@@ -25,8 +25,7 @@ object RapidString {
 
     private def newLocalRapidClass(c: Context, escapeFunction: String => String)(arguments: Seq[c.Expr[Any]]):c.Expr[String] = {
       import c.universe._
-      val Apply(Select(Apply(_, List(Apply(_, partTrees))), _), _) =
-        c.macroApplication
+      val Apply(Select(Apply(_, List(Apply(_, partTrees))), _), _) = c.macroApplication
       assert(partTrees.length == arguments.length + 1)
       if (arguments.isEmpty) {
         val Literal(Constant(lastPart: String)) = partTrees.last
@@ -34,7 +33,7 @@ object RapidString {
 
       } else {
         val initial = q"""(new java.lang.StringBuilder())"""
-        val appendTrees = 0.until(arguments.length).foldLeft[Tree](initial) { (prefixTree, i) =>
+        val appendTrees = arguments.indices.foldLeft[Tree](initial) { (prefixTree, i) =>
           val arg = arguments(i)
           val Literal(Constant(part: String)) = partTrees(i)
           part match {
@@ -63,13 +62,13 @@ object RapidString {
   implicit final class RapidStringContext(val stringContext: StringContext) extends AnyVal {
     import RapidStringContext._
 
-    final def rapid(arguments: Any*) = macro rapid_impl
+    def rapid(arguments: Any*): String = macro rapid_impl
   }
 
 
     implicit final class LongFilled(val underlying: Long) extends AnyVal {
       @inline
-      final def filled(minWidth: Int, filledChar: Char = ' ', radix: Int = 10) = {
+      def filled(minWidth: Int, filledChar: Char = ' ', radix: Int = 10): String = {
         val unfilled = java.lang.Long.toString(underlying, radix)
         if (unfilled.length < minWidth) {
           if (underlying >= 0 || filledChar == ' ') {
@@ -85,7 +84,7 @@ object RapidString {
 
     implicit final class IntFilled(val underlying: Int) extends AnyVal {
       @inline
-      final def filled(minWidth: Int, filledChar: Char = ' ', radix: Int = 10) = {
+      def filled(minWidth: Int, filledChar: Char = ' ', radix: Int = 10): String = {
         val unfilled = java.lang.Integer.toString(underlying, radix)
         if (unfilled.length < minWidth) {
           if (underlying >= 0 || filledChar == ' ') {
@@ -101,9 +100,9 @@ object RapidString {
 
     import language.implicitConversions
     @inline
-    implicit final def byteFilled(byte: Byte) = new IntFilled(byte)
+    implicit final def byteFilled(byte: Byte): IntFilled = new IntFilled(byte.toInt)
 
     @inline
-    implicit final def shortFilled(short: Short) = new IntFilled(short)
+    implicit final def shortFilled(short: Short): IntFilled = new IntFilled(short.toInt)
 
 }

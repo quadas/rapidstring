@@ -96,8 +96,8 @@ class ExampleSpec extends FlatSpec with Matchers {
   "A rapid string" should "interpolate complex url string" in {
     val url = "https://192.168.0.1267/tracking?type=0&c=1"
     val ext = """document.write("hello world");"""
-    rapid"${url}?t=0&ext=${ext}" should be (
-      s"${url}?t=0&ext=${ext}"
+    rapid"$url?t=0&ext=${ext}" should be (
+      s"$url?t=0&ext=${ext}"
       )
   }
 
@@ -116,7 +116,7 @@ class ExampleSpec extends FlatSpec with Matchers {
 
   "rapid" should "escape string" in {
     val url = "https://192.168.0.1267/tracking?type=0&c=1"
-    rapid"${url}\nt=10\next=23" should be (
-      s"${url}\nt=10\next=23")
+    rapid"$$$url\nt=10\next=23" should be (
+      s"$$$url\nt=10\next=23")
   }
 }
