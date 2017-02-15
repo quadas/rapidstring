@@ -44,6 +44,12 @@ scmInfo := Some(ScmInfo(
   Some("scm:git:git@github.com:quadas/rapidstring.git")))
 
 pomExtra :=
+  <url>https://github.com/quadas/rapidstring</url>
+  <scm>
+    <connection>scm:git:https://github.com/quadas/rapidstring.git</connection>
+    <developerConnection>scm:git:https://github.com/quadas/rapidstring.git</developerConnection>
+    <url>https://github.com/quadas/rapidstring</url>
+  </scm>
   <developers>
     <developer>
       <id>quadas</id>
