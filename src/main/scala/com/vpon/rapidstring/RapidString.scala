@@ -14,23 +14,20 @@
 
 package com.vpon.rapidstring
 
-
-import language.experimental.macros
+import scala.language.experimental.macros
 import scala.reflect.macros.whitebox.Context
-
 
 object RapidString {
 
   object RapidStringContext {
 
-    private def newLocalRapidClass(c: Context, escapeFunction: String => String)(arguments: Seq[c.Expr[Any]]):c.Expr[String] = {
+    private def newLocalRapidClass(c: Context, escapeFunction: String => String)(arguments: Seq[c.Expr[Any]]): c.Expr[String] = {
       import c.universe._
       val Apply(Select(Apply(_, List(Apply(_, partTrees))), _), _) = c.macroApplication
       assert(partTrees.length == arguments.length + 1)
       if (arguments.isEmpty) {
         val Literal(Constant(lastPart: String)) = partTrees.last
-        c.Expr(q"""${escapeFunction(lastPart)}""")
-
+        c.Expr( q"""${escapeFunction(lastPart)}""")
       } else {
         val initial = q"""(new java.lang.StringBuilder())"""
         val appendTrees = arguments.indices.foldLeft[Tree](initial) { (prefixTree, i) =>
@@ -46,63 +43,61 @@ object RapidString {
         val Literal(Constant(lastPart: String)) = partTrees.last
         lastPart match {
           case p if p.nonEmpty =>
-            c.Expr(q"""(..$appendTrees).append(${escapeFunction(p)}).toString()""")
+            c.Expr( q"""(..$appendTrees).append(${escapeFunction(p)}).toString()""")
           case _ =>
-            c.Expr(q"""(..$appendTrees).toString()""")
+            c.Expr( q"""(..$appendTrees).toString()""")
         }
       }
     }
 
     final def rapid_impl(c: Context)(arguments: c.Expr[Any]*): c.Expr[String] =
       newLocalRapidClass(c, StringContext.treatEscapes)(arguments)
-
   }
 
-
   implicit final class RapidStringContext(val stringContext: StringContext) extends AnyVal {
+
     import RapidStringContext._
 
     def rapid(arguments: Any*): String = macro rapid_impl
   }
 
-
-    implicit final class LongFilled(val underlying: Long) extends AnyVal {
-      @inline
-      def filled(minWidth: Int, filledChar: Char = ' ', radix: Int = 10): String = {
-        val unfilled = java.lang.Long.toString(underlying, radix)
-        if (unfilled.length < minWidth) {
-          if (underlying >= 0 || filledChar == ' ') {
-            new String(Array.fill(minWidth - unfilled.length)(filledChar)) + unfilled
-          } else {
-            "-" + new String(Array.fill(minWidth - unfilled.length)(filledChar)) + unfilled.substring(1)
-          }
+  implicit final class LongFilled(val underlying: Long) extends AnyVal {
+    @inline
+    def filled(minWidth: Int, filledChar: Char = ' ', radix: Int = 10): String = {
+      val unfilled = java.lang.Long.toString(underlying, radix)
+      if (unfilled.length < minWidth) {
+        if (underlying >= 0 || filledChar == ' ') {
+          new String(Array.fill(minWidth - unfilled.length)(filledChar)) + unfilled
         } else {
-          unfilled
+          "-" + new String(Array.fill(minWidth - unfilled.length)(filledChar)) + unfilled.substring(1)
         }
+      } else {
+        unfilled
       }
     }
+  }
 
-    implicit final class IntFilled(val underlying: Int) extends AnyVal {
-      @inline
-      def filled(minWidth: Int, filledChar: Char = ' ', radix: Int = 10): String = {
-        val unfilled = java.lang.Integer.toString(underlying, radix)
-        if (unfilled.length < minWidth) {
-          if (underlying >= 0 || filledChar == ' ') {
-            new String(Array.fill(minWidth - unfilled.length)(filledChar)) + unfilled
-          } else {
-            "-" + new String(Array.fill(minWidth - unfilled.length)(filledChar)) + unfilled.substring(1)
-          }
+  implicit final class IntFilled(val underlying: Int) extends AnyVal {
+    @inline
+    def filled(minWidth: Int, filledChar: Char = ' ', radix: Int = 10): String = {
+      val unfilled = java.lang.Integer.toString(underlying, radix)
+      if (unfilled.length < minWidth) {
+        if (underlying >= 0 || filledChar == ' ') {
+          new String(Array.fill(minWidth - unfilled.length)(filledChar)) + unfilled
         } else {
-          unfilled
+          "-" + new String(Array.fill(minWidth - unfilled.length)(filledChar)) + unfilled.substring(1)
         }
+      } else {
+        unfilled
       }
     }
+  }
 
-    import language.implicitConversions
-    @inline
-    implicit final def byteFilled(byte: Byte): IntFilled = new IntFilled(byte.toInt)
+  import language.implicitConversions
 
-    @inline
-    implicit final def shortFilled(short: Short): IntFilled = new IntFilled(short.toInt)
+  @inline
+  implicit final def byteFilled(byte: Byte): IntFilled = new IntFilled(byte.toInt)
 
+  @inline
+  implicit final def shortFilled(short: Short): IntFilled = new IntFilled(short.toInt)
 }
