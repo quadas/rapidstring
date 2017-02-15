@@ -1,4 +1,4 @@
-# RapidString
+# RapidString [![Travis](https://travis-ci.org/quadas/rapidstring.svg?branch=master)](https://travis-ci.org/quadas/rapidstring)
 
 **RapidString** is a faster Scala string interpolation replacement.  It is inspired by Fastering (https://github.com/Atry/fastring).  Some code is copied from Fastring.
 
@@ -23,6 +23,7 @@
 
 Put these lines in your `build.sbt` if you use [Sbt](http://www.scala-sbt.org/):
 
+    resolvers += Resolver.bintrayRepo("quadas", "maven")
     libraryDependencies += "com.vpon" %% "rapidstring" % "0.1.2"
 
 See http://mvnrepository.com/artifact/com.vpon/rapidstring_2.11/0.1.2 if you use [Maven](http://maven.apache.org/)
