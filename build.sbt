@@ -1,7 +1,7 @@
 organization in Global := "com.quadas"
 name in Global := "rapidstring"
 scalaVersion in Global := "2.11.8"
-crossScalaVersions in Global := Seq("2.11.8, 2.12.1")
+crossScalaVersions in Global := Seq("2.11.8", "2.12.1")
 
 version := "0.1.3"
 
