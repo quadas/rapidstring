@@ -101,6 +101,15 @@ class ExampleSpec extends FlatSpec with Matchers {
       )
   }
 
+  "A rapid string" should "handle complex class structure" in {
+    class B(val int: Int) {
+      override def toString() = s"B($int)"
+    }
+    case class A(int: Int, string: String, b: B)
+    val testA = A(0, "abc", new B(3))
+    rapid"a: $testA b: ${testA.b}" should be (s"a: $testA b: ${testA.b}")
+  }
+
   "filled method" should "fill left padding with spefied characters" in {
     val i1 = 19
     val i2 = -120
