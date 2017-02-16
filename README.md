@@ -7,7 +7,7 @@
 
 `RapidString` uses [string interpolation](http://docs.scala-lang.org/sips/pending/string-interpolation.html) syntax.
 
-    import com.vpon.rapidstring.RapidString._
+    import com.quadas.rapidstring.RapidString._
     def poem() {
       val f = "forgotten"
       val m = "machinery"
@@ -24,9 +24,7 @@
 Put these lines in your `build.sbt` if you use [Sbt](http://www.scala-sbt.org/):
 
     resolvers += Resolver.bintrayRepo("quadas", "maven")
-    libraryDependencies += "com.vpon" %% "rapidstring" % "0.1.2"
+    libraryDependencies += "com.quadas" %% "rapidstring" % "0.1.3.1"
 
-See http://mvnrepository.com/artifact/com.vpon/rapidstring_2.11/0.1.2 if you use [Maven](http://maven.apache.org/)
+See http://mvnrepository.com/artifact/com.quadas/rapidstring_2.11/0.1.3.1 if you use [Maven](http://maven.apache.org/)
 or other build systems.
-
-Note that `RapidString` requires [Scala](http://www.scala-lang.org/) `2.11`.

@@ -12,10 +12,10 @@
  * limitations under the License.
  */
 
-package com.vpon.rapidstring.test
+package com.quadas.rapidstring.test
 
 import org.scalatest._
-import com.vpon.rapidstring.RapidString._
+import com.quadas.rapidstring.RapidString._
 
 class ExampleSpec extends FlatSpec with Matchers {
 

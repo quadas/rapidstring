@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package com.vpon.rapidstring
+package com.quadas.rapidstring
 
 import scala.language.experimental.macros
 import scala.reflect.macros.whitebox.Context
