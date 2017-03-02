@@ -24,7 +24,7 @@
 Put these lines in your `build.sbt` if you use [Sbt](http://www.scala-sbt.org/):
 
     resolvers += Resolver.bintrayRepo("quadas", "maven")
-    libraryDependencies += "com.quadas" %% "rapidstring" % "0.1.3.1"
+    libraryDependencies += "com.quadas" %% "rapidstring" % "0.1.3.2"
 
-See http://mvnrepository.com/artifact/com.quadas/rapidstring_2.11/0.1.3.1 if you use [Maven](http://maven.apache.org/)
+See https://bintray.com/quadas/maven/rapidstring/0.1.3.2 if you use [Maven](http://maven.apache.org/)
 or other build systems.
